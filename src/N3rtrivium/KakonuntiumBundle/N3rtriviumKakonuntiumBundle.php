@@ -1,6 +1,6 @@
 <?php
 
-namespace Acme\DemoBundle;
+namespace N3rtrivium\KakonuntiumBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
