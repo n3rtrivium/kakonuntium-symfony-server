@@ -10,13 +10,15 @@ use FOS\RestBundle\Controller\Annotations\Post;
 use N3rtrivium\KakonuntiumBundle\Entity\Lecture;
 use N3rtrivium\KakonuntiumBundle\Entity\User;
 
-class GuessController extends FOSRestController {
+class GuessController extends FOSRestController
+{
 
     /**
      * @Get("/lectures/{lecture}/guesses")
      * @ParamConverter("lecture", class="N3rtriviumKakonuntiumBundle:Lecture")
      */ 
-    public function showGuessesOfLectureAction(Lecture $lecture) {
+    public function showGuessesOfLectureAction(Lecture $lecture)
+    {
         
     }
     
@@ -25,7 +27,8 @@ class GuessController extends FOSRestController {
      * @Post("/lectures/{lecture}/guesses")
      * @ParamConverter("lecture", class="N3rtriviumKakonuntiumBundle:Lecture")
      */ 
-    public function saveGuessesAction(Lecture $lecture) {
+    public function saveGuessesAction(Lecture $lecture)
+    {
         
     }
     
@@ -34,7 +37,8 @@ class GuessController extends FOSRestController {
      * @ParamConverter("lecture", class="N3rtriviumKakonuntiumBundle:Lecture")
      * @ParamConverter("user", class="N3rtriviumKakonuntiumBundle:User", options={"id"="public_id"})
      */ 
-    public function showGuessesOfUser(Lecture $lecture, User $user) {
+    public function showGuessesOfUser(Lecture $lecture, User $user)
+    {
         
     }
     
@@ -42,7 +46,8 @@ class GuessController extends FOSRestController {
      * @Post("/lectures/{lecture}/guesses/admin/{which}")
      * @ParamConverter("lecture", class="N3rtriviumKakonuntiumBundle:Lecture")
      */ 
-    public function countActualAction(Lecture $lecture, $which) {
+    public function countActualAction(Lecture $lecture, $which)
+    {
         
     }
     
