@@ -72,7 +72,7 @@ class Count
     /**
      * Get lecture
      *
-     * @return lecture 
+     * @return Lecture 
      */
     public function getLecture()
     {

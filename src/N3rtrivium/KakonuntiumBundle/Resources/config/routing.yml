@@ -1,12 +1,18 @@
-_welcome:
-    pattern:  /
-    defaults: { _controller: AcmeDemoBundle:Welcome:index }
+index:
+    type: rest
+    prefix: /
+    resource: "@N3rtriviumKakonuntiumBundle/Controller/IndexController.php"
 
-_demo_secured:
-    resource: "@AcmeDemoBundle/Controller/SecuredController.php"
-    type:     annotation
 
-_demo:
-    resource: "@AcmeDemoBundle/Controller/DemoController.php"
-    type:     annotation
-    prefix:   /demo
+# POST /users
+# GET /lectures
+# GET /lectures/next
+# GET /lectures/{id}
+# GET /lectures/{id}/guesses
+# PUT or POST /lectures/{id}/guesses
+# GET /lectures/{id}/guesses/{user-id}
+# POST /lectures/{id}/guesses/admin/{pieps-id}
+
+# http://williamdurand.fr/2012/08/02/rest-apis-with-symfony2-the-right-way/
+# https://github.com/FriendsOfSymfony/FOSRestBundle/blob/master/Resources/doc/index.md
+# http://welcometothebundle.com/symfony2-rest-api-the-best-2013-way/
