@@ -11,7 +11,8 @@ class IndexController extends FOSRestController {
      * @Get("/")
      */ 
     public function indexAction() {
-        
+        $view = $this->view(new \stdClass(), 200);
+        return $this->handleView($view);
     }
     
 }

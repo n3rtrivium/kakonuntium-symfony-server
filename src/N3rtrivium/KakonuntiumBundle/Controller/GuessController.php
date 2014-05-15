@@ -32,7 +32,7 @@ class GuessController extends FOSRestController {
     /**
      * @Get("/lectures/{lecture}/guesses/{user}")
      * @ParamConverter("lecture", class="N3rtriviumKakonuntiumBundle:Lecture")
-     * @ParamConverter("user", class="N3rtriviumKakonuntiumBundle:User")
+     * @ParamConverter("user", class="N3rtriviumKakonuntiumBundle:User", options={"id"="public_id"})
      */ 
     public function showGuessesOfUser(Lecture $lecture, User $user) {
         

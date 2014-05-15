@@ -1,0 +1,53 @@
+parameters:
+    lectures.guesses.which:
+        - pieps
+        - haui
+
+services:
+    n3rtrivium_kakonuntium.repository.users:
+        class: N3rtrivium\KakonuntiumBundle\Repository\UserRepository
+        public: false
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments:
+            - "N3rtriviumKakonuntiumBundle:User"
+
+    n3rtrivium_kakonuntium.repository.lectures:
+        class: N3rtrivium\KakonuntiumBundle\Repository\LectureRepository
+        public: false
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments:
+            - "N3rtriviumKakonuntiumBundle:Lecture"
+
+    n3rtrivium_kakonuntium.repository.guesses:
+        class: N3rtrivium\KakonuntiumBundle\Repository\GuessRepository
+        public: false
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments:
+            - "N3rtriviumKakonuntiumBundle:Guess"
+
+    n3rtrivium_kakonuntium.repository.countings:
+        class: N3rtrivium\KakonuntiumBundle\Repository\CountRepository
+        public: false
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments:
+            - "N3rtriviumKakonuntiumBundle:Count"
+
+    n3rtrivium_kakonuntium.service.users:
+        class: N3rtrivium\KakonuntiumBundle\Service\UserService
+        arguments:
+            - @n3rtrivium_kakonuntium.repository.users
+
+    n3rtrivium_kakonuntium.service.lectures:
+        class: N3rtrivium\KakonuntiumBundle\Service\LectureService
+        arguments:
+            - @n3rtrivium_kakonuntium.repository.lectures
+
+    n3rtrivium_kakonuntium.service.guesses:
+        class: N3rtrivium\KakonuntiumBundle\Service\GuessService
+        arguments:
+            - @n3rtrivium_kakonuntium.repository.guesses
+

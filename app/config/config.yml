@@ -49,7 +49,8 @@ swiftmailer:
     spool:     { type: memory }
     
 fos_rest:
-    # configure the view handler
+    routing_loader:
+        include_format: false
     view:
         force_redirects:
             json: true
