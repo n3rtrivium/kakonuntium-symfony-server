@@ -1,17 +1,28 @@
+# GET /
 index:
     type: rest
-    prefix: /
-    resource: "@N3rtriviumKakonuntiumBundle/Controller/IndexController.php"
-
+    resource: "N3rtrivium\KakonuntiumBundle\Controller\IndexController"
 
 # POST /users
+users:
+    type: rest
+    resource: "N3rtrivium\KakonuntiumBundle\Controller\UserController"
+
 # GET /lectures
 # GET /lectures/next
 # GET /lectures/{id}
+lectures:
+    type: rest
+    resource: "N3rtrivium\KakonuntiumBundle\Controller\LectureController"
+
 # GET /lectures/{id}/guesses
 # PUT or POST /lectures/{id}/guesses
 # GET /lectures/{id}/guesses/{user-id}
 # POST /lectures/{id}/guesses/admin/{pieps-id}
+guesses:
+    type: rest
+    parent: lectures
+    resource: "N3rtrivium\KakonuntiumBundle\Controller\GuessController"
 
 # http://williamdurand.fr/2012/08/02/rest-apis-with-symfony2-the-right-way/
 # https://github.com/FriendsOfSymfony/FOSRestBundle/blob/master/Resources/doc/index.md
