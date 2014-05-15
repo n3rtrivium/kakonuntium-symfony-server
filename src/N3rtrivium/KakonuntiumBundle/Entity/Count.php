@@ -3,11 +3,12 @@
 namespace N3rtrivium\KakonuntiumBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Count
  *
- * @ORM\Table()
+ * @ORM\Table(name="counts")
  * @ORM\Entity(repositoryClass="N3rtrivium\KakonuntiumBundle\Repository\CountRepository")
  */
 class Count
@@ -22,9 +23,10 @@ class Count
     private $id;
 
     /**
-     * @var \stdClass
+     * @var Lecture
      *
-     * @ORM\Column(name="lecture", type="object")
+     * @ORM\JoinColumn(name="lecture_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Lecture", inversedBy="countings")
      */
     private $lecture;
 
@@ -32,6 +34,7 @@ class Count
      * @var \DateTime
      *
      * @ORM\Column(name="submitTime", type="datetime")
+     * @Gedmo\Timestampable(on="create")
      */
     private $submitTime;
 
@@ -56,7 +59,7 @@ class Count
     /**
      * Set lecture
      *
-     * @param \stdClass $lecture
+     * @param Lecture $lecture
      * @return Count
      */
     public function setLecture($lecture)
@@ -69,7 +72,7 @@ class Count
     /**
      * Get lecture
      *
-     * @return \stdClass 
+     * @return lecture 
      */
     public function getLecture()
     {

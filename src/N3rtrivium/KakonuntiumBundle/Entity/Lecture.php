@@ -3,11 +3,12 @@
 namespace N3rtrivium\KakonuntiumBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Lecture
  *
- * @ORM\Table()
+ * @ORM\Table(name="lectures")
  * @ORM\Entity(repositoryClass="N3rtrivium\KakonuntiumBundle\Repository\LectureRepository")
  */
 class Lecture
@@ -50,19 +51,40 @@ class Lecture
     private $phase;
 
     /**
-     * @var integer
+     * @var User|null
      *
-     * @ORM\Column(name="admin_user_id", type="integer")
+     * @ORM\JoinColumn(name="admin_user_id", referencedColumnName="id", nullable=true)
+     * @ORM\ManyToOne(targetEntity="User")
      */
     private $adminUser;
 
     /**
-     * @var integer
+     * @var User|null
      *
-     * @ORM\Column(name="winner_user_id", type="integer")
+     * @ORM\JoinColumn(name="winner_user_id", referencedColumnName="id", nullable=true)
+     * @ORM\ManyToOne(targetEntity="User")
      */
     private $winnerUser;
+    
+    /**
+     * @var ArrayCollection
+     * 
+     * @ORM\OneToMany(targetEntity="Guess", mappedBy="lecture")
+     **/
+    private $guesses;
+    
+    /**
+     * @var ArrayCollection
+     * 
+     * @ORM\OneToMany(targetEntity="Count", mappedBy="lecture")
+     **/
+    private $countings;
 
+    public function __construct()
+    {
+        $this->guesses = new ArrayCollection();
+        $this->countings = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -167,32 +189,32 @@ class Lecture
     }
 
     /**
-     * Set adminUserId
+     * Set admin user
      *
-     * @param integer $adminUserId
+     * @param User|null $adminUserId
      * @return Lecture
      */
-    public function setAdminUserId($adminUserId)
+    public function setAdminUserId($adminUser)
     {
-        $this->adminUserId = $adminUserId;
+        $this->adminUser = $adminUser;
 
         return $this;
     }
 
     /**
-     * Get adminUserId
+     * Get admin user
      *
-     * @return integer 
+     * @return User|null 
      */
-    public function getAdminUserId()
+    public function getAdminUser()
     {
-        return $this->adminUserId;
+        return $this->adminUser;
     }
 
     /**
-     * Set winnerUser
+     * Set winning user
      *
-     * @param integer $winnerUser
+     * @param User|null $winnerUser
      * @return Lecture
      */
     public function setWinnerUser($winnerUser)
@@ -203,12 +225,58 @@ class Lecture
     }
 
     /**
-     * Get winnerUser
+     * Get winning user
      *
-     * @return integer 
+     * @return User|null 
      */
     public function getWinnerUser()
     {
         return $this->winnerUser;
+    }
+    
+    /**
+     * Set guesses
+     *
+     * @param ArrayCollection $guesses
+     * @return Lecture
+     */
+    public function setGuesses($guesses)
+    {
+        $this->guesses = $guesses;
+
+        return $this;
+    }
+
+    /**
+     * Get guesses
+     *
+     * @return ArrayCollection 
+     */
+    public function getGuesses()
+    {
+        return $this->guesses;
+    }
+    
+    /**
+     * Set countings
+     *
+     * @param ArrayCollection $countings
+     * @return Lecture
+     */
+    public function setCountings($countings)
+    {
+        $this->countings = $countings;
+
+        return $this;
+    }
+
+    /**
+     * Get countings
+     *
+     * @return ArrayCollection 
+     */
+    public function getCountings()
+    {
+        return $this->countings;
     }
 }

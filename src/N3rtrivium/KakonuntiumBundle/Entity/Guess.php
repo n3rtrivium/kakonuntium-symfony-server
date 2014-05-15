@@ -3,11 +3,14 @@
 namespace N3rtrivium\KakonuntiumBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Guess
  *
- * @ORM\Table()
+ * @ORM\Table(name="guesses", uniqueConstraints={
+ *      @ORM\UniqueConstraint(name="unique_guess_per_lecture", columns={"user", "lecture"})
+ * })
  * @ORM\Entity(repositoryClass="N3rtrivium\KakonuntiumBundle\Repository\GuessRepository")
  */
 class Guess
@@ -22,16 +25,18 @@ class Guess
     private $id;
 
     /**
-     * @var \stdClass
+     * @var User
      *
-     * @ORM\Column(name="user", type="object")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="guesses")
      */
     private $user;
 
     /**
-     * @var \stdClass
+     * @var Lecture
      *
-     * @ORM\Column(name="lecture", type="object")
+     * @ORM\JoinColumn(name="lecture_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Lecture", inversedBy="guesses")
      */
     private $lecture;
 
@@ -39,6 +44,7 @@ class Guess
      * @var \DateTime
      *
      * @ORM\Column(name="insertTime", type="datetime")
+     * @Gedmo\Timestampable(on="create")
      */
     private $insertTime;
 
@@ -46,6 +52,7 @@ class Guess
      * @var \DateTime
      *
      * @ORM\Column(name="updateTime", type="datetime")
+     * @Gedmo\Timestampable(on="update")
      */
     private $updateTime;
 

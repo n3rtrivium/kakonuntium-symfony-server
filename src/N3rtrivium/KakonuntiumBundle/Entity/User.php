@@ -3,11 +3,12 @@
 namespace N3rtrivium\KakonuntiumBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * User
  *
- * @ORM\Table()
+ * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="N3rtrivium\KakonuntiumBundle\Repository\UserRepository")
  */
 class User
@@ -34,7 +35,18 @@ class User
      * @ORM\Column(name="public_id", type="integer")
      */
     private $publicId;
+    
+    /**
+     * @var ArrayCollection
+     * 
+     * @ORM\OneToMany(targetEntity="Guess", mappedBy="user")
+     **/
+    private $guesses;
 
+    public function __construct()
+    {
+        $this->guesses = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -90,5 +102,28 @@ class User
     public function getPublicId()
     {
         return $this->publicId;
+    }
+    
+    /**
+     * Set guesses
+     *
+     * @param ArrayCollection $guesses
+     * @return User
+     */
+    public function setGuesses($guesses)
+    {
+        $this->guesses = $guesses;
+
+        return $this;
+    }
+
+    /**
+     * Get guesses
+     *
+     * @return ArrayCollection 
+     */
+    public function getGuesses()
+    {
+        return $this->guesses;
     }
 }
