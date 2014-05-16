@@ -13,7 +13,8 @@ class UserController extends FOSRestController
      */ 
     public function createUserAction()
     {
-        
+        $userService = $this->container->get('n3rtrivium_kakonuntium.service.users');
+        $userService->createUser();
     }
     
 }

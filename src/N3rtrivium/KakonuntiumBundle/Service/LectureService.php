@@ -2,11 +2,12 @@
 
 namespace N3rtrivium\KakonuntiumBundle\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityManager;
+use N3rtrivium\KakonuntiumBundle\Repository\LectureRepository;
 
 class LectureService
 {
-    public function __construct(EntityManagerInterface $lectureRepository)
+    public function __construct(EntityManager $entityManager, LectureRepository $lectureRepository)
     {
         
     }

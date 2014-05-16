@@ -39,15 +39,18 @@ services:
     n3rtrivium_kakonuntium.service.users:
         class: N3rtrivium\KakonuntiumBundle\Service\UserService
         arguments:
+            - @doctrine.orm.entity_manager
             - @n3rtrivium_kakonuntium.repository.users
 
     n3rtrivium_kakonuntium.service.lectures:
         class: N3rtrivium\KakonuntiumBundle\Service\LectureService
         arguments:
+            - @doctrine.orm.entity_manager
             - @n3rtrivium_kakonuntium.repository.lectures
 
     n3rtrivium_kakonuntium.service.guesses:
         class: N3rtrivium\KakonuntiumBundle\Service\GuessService
         arguments:
+            - @doctrine.orm.entity_manager
             - @n3rtrivium_kakonuntium.repository.guesses
 

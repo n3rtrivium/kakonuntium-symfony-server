@@ -2,11 +2,12 @@
 
 namespace N3rtrivium\KakonuntiumBundle\Service;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityManager;
+use N3rtrivium\KakonuntiumBundle\Repository\GuessRepository;
 
 class GuessService
 {
-    public function __construct(EntityManagerInterface $guessRepository)
+    public function __construct(EntityManager $entityManager, GuessRepository $guessRepository)
     {
         
     }

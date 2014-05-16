@@ -23,7 +23,3 @@ guesses:
     type: rest
     parent: lectures
     resource: "N3rtrivium\KakonuntiumBundle\Controller\GuessController"
-
-# http://williamdurand.fr/2012/08/02/rest-apis-with-symfony2-the-right-way/
-# https://github.com/FriendsOfSymfony/FOSRestBundle/blob/master/Resources/doc/index.md
-# http://welcometothebundle.com/symfony2-rest-api-the-best-2013-way/
