@@ -8,14 +8,20 @@ use N3rtrivium\KakonuntiumBundle\Entity\User;
 
 class UserService
 {
-    private $entityManager;
+	/**
+	 * @var EntityManager
+	 */
+	private $entityManager;
+
+	/**
+	 * @var UserRepository
+	 */
+	private $userRepository;
     
-    private $userRepository;
-    
-    public function __construct(EntityManager $entityManager, UserRepository $userRepository)
+    public function __construct(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->userRepository = $userRepository;
+        $this->userRepository = $entityManager->getRepository('N3rtriviumKakonuntiumBundle:User');
     }
     
     public function createUser($username)

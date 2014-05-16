@@ -7,7 +7,7 @@ use N3rtrivium\KakonuntiumBundle\Repository\LectureRepository;
 
 class LectureService
 {
-    public function __construct(EntityManager $entityManager, LectureRepository $lectureRepository)
+    public function __construct(EntityManager $entityManager)
     {
         
     }
