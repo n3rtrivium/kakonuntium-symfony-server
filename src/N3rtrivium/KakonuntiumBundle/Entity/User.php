@@ -4,12 +4,14 @@ namespace N3rtrivium\KakonuntiumBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
  *
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="N3rtrivium\KakonuntiumBundle\Repository\UserRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class User
 {
@@ -26,6 +28,12 @@ class User
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=50)
+     * @Assert\Length(
+     *      min = "1",
+     *      max = "50",
+     *      minMessage = "Your username must be at least {{ limit }} characters length",
+     *      maxMessage = "Your usenrame cannot be longer than {{ limit }} characters length"
+     * )
      */
     private $username;
 
@@ -46,6 +54,14 @@ class User
     public function __construct()
     {
         $this->guesses = new ArrayCollection();
+    }
+    
+    /**
+     * @PrePersist
+     */
+    public function generatePublicIdOnPrePersist()
+    {
+        $this->publicId = rand(1000000, 9999999);
     }
 
     /**
