@@ -28,6 +28,7 @@ class User
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=50)
+     * @Assert\NotBlank
      * @Assert\Length(
      *      min = "1",
      *      max = "50",

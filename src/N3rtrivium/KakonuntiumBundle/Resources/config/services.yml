@@ -4,17 +4,20 @@ parameters:
         - haui
 
 services:
-    n3rtrivium_kakonuntium.service.users:
+    n3rtrivium_kakonuntium.users:
         class: N3rtrivium\KakonuntiumBundle\Service\UserService
         arguments:
             - @doctrine.orm.entity_manager
+            - @validator
 
-    n3rtrivium_kakonuntium.service.lectures:
+    n3rtrivium_kakonuntium.lectures:
         class: N3rtrivium\KakonuntiumBundle\Service\LectureService
         arguments:
             - @doctrine.orm.entity_manager
+            - @validator
 
-    n3rtrivium_kakonuntium.service.guesses:
+    n3rtrivium_kakonuntium.guesses:
         class: N3rtrivium\KakonuntiumBundle\Service\GuessService
         arguments:
             - @doctrine.orm.entity_manager
+            - @validator
