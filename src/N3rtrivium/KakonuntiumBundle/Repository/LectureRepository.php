@@ -3,6 +3,7 @@
 namespace N3rtrivium\KakonuntiumBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use N3rtrivium\KakonuntiumBundle\Entity\Lecture;
 
 /**
  * LectureRepository
@@ -12,4 +13,25 @@ use Doctrine\ORM\EntityRepository;
  */
 class LectureRepository extends EntityRepository
 {
+	public function findFutureUpcomingOrCurrentLectures()
+	{
+		$maxAllowedFutureDate = new \DateTime();
+		$maxAllowedFutureDate->add(new \DateInterval('P2D'));
+
+		$minAllowedEndedPastDate = new \DateTime();
+		$minAllowedEndedPastDate->sub(new \DateInterval('PT90M'));
+
+		// return only lectures where the beginTime is not too far in the future
+		// OR phase is ENDED and they are not too old - otherwise, filter ENDED
+		$query = $this->createQueryBuilder('l')
+			->where('l.phase = :phaseEnded AND l.endTime >= :minPastTime')
+			->orWhere('l.beginTime <= :maxFutureTime AND l.phase != :phaseEnded')
+			->setParameter('phaseEnded', Lecture::PHASE_ENDED)
+			->setParameter('maxFutureTime', $maxAllowedFutureDate)
+			->setParameter('minPastTime', $minAllowedEndedPastDate)
+			->orderBy('l.beginTime', 'ASC')
+			->getQuery();
+
+		return $query->getResult();
+	}
 }
