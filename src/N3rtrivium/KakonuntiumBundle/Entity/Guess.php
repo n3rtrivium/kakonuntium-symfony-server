@@ -62,6 +62,13 @@ class Guess
      */
     private $which;
 
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="quantity", type="integer")
+	 */
+	private $quantity;
+
 
     /**
      * Get id
@@ -187,4 +194,24 @@ class Guess
     {
         return $this->which;
     }
+
+	/**
+	 * Get quantity
+	 *
+	 * @return string
+	 */
+	public function getQuantity()
+	{
+		return $this->quantity;
+	}
+
+	/**
+	 * Set quantity
+	 *
+	 * @param string $quantity
+	 */
+	public function setQuantity($quantity)
+	{
+		$this->quantity = $quantity;
+	}
 }
