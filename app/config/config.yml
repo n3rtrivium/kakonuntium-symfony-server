@@ -28,6 +28,7 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    exception_controller: 'FOS\RestBundle\Controller\ExceptionController::showAction'
 
 # Doctrine Configuration
 doctrine:
@@ -69,4 +70,9 @@ fos_rest:
     format_listener:
         rules:
             - { path: ^/, priorities: [ json, xml ], fallback_format: json, prefer_extension: false }
-
+    exception:
+        codes:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
+            'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
+#        messages:
+#            'Acme\HelloBundle\Exception\MyExceptionWithASafeMessage': true
