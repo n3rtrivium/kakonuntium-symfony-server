@@ -3,36 +3,51 @@
 namespace N3rtrivium\KakonuntiumBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use FOS\RestBundle\Controller\Annotations\Get;
 use N3rtrivium\KakonuntiumBundle\Entity\Lecture;
+use FOS\RestBundle\Controller\Annotations\View;
 
 class LectureController extends FOSRestController
 {
 
+	/**
+	 * @Get("/lectures")
+	 * @View
+	 */
+	public function showAllLecturesAction()
+	{
+		$lectureService = $this->container->get('n3rtrivium_kakonuntium.lectures');
+		return $lectureService->retrieveAllLectures();
+	}
+
     /**
-     * @Get("/lectures")
+     * @Get("/lectures/future")
+     * @View
      */ 
     public function showUpcomingLecturesAction()
     {
-        
+        $lectureService = $this->container->get('n3rtrivium_kakonuntium.lectures');
+	    return $lectureService->retrieveUpcomingLectures();
     }
     
     /**
      * @Get("/lectures/next")
+     * @View
      */ 
     public function showNextLectureAction()
     {
-        
+	    $lectureService = $this->container->get('n3rtrivium_kakonuntium.lectures');
+	    return $lectureService->retrieveUpcomingLecture();
     }
     
     /**
-     * @Get("/lectures/{lecture}")
-     * @ParamConverter("lecture", class="N3rtriviumKakonuntiumBundle:Lecture")
+     * @Get("/lectures/{lectureId}", requirements={"lectureId" = "\d+"})
+     * @View
      */ 
-    public function showLectureAction(Lecture $lecture)
+    public function showLectureAction($lectureId)
     {
-        
+	    $lectureService = $this->container->get('n3rtrivium_kakonuntium.lectures');
+	    return $lectureService->retrieveLectureById($lectureId);
     }
     
 }

@@ -4,6 +4,8 @@ namespace N3rtrivium\KakonuntiumBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation as Serializer;
+use JMS\Serializer\JsonSerializationVisitor;
 
 /**
  * Lecture
@@ -13,6 +15,12 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Lecture
 {
+	const PHASE_OPEN = 0;
+
+	const PHASE_RUNNING = 1;
+
+	const PHASE_ENDED = 2;
+
     /**
      * @var integer
      *
@@ -47,6 +55,7 @@ class Lecture
      * @var integer
      *
      * @ORM\Column(name="phase", type="smallint")
+     * @Serializer\Exclude
      */
     private $phase;
 
@@ -55,6 +64,7 @@ class Lecture
      *
      * @ORM\JoinColumn(name="admin_user_id", referencedColumnName="id", nullable=true)
      * @ORM\ManyToOne(targetEntity="User")
+     * @Serializer\Exclude
      */
     private $adminUser;
 
@@ -63,6 +73,7 @@ class Lecture
      *
      * @ORM\JoinColumn(name="winner_user_id", referencedColumnName="id", nullable=true)
      * @ORM\ManyToOne(targetEntity="User")
+     * @Serializer\Exclude
      */
     private $winnerUser;
     
@@ -70,6 +81,7 @@ class Lecture
      * @var ArrayCollection
      * 
      * @ORM\OneToMany(targetEntity="Guess", mappedBy="lecture")
+     * @Serializer\Exclude
      **/
     private $guesses;
     
@@ -77,6 +89,7 @@ class Lecture
      * @var ArrayCollection
      * 
      * @ORM\OneToMany(targetEntity="Count", mappedBy="lecture")
+     * @Serializer\Exclude
      **/
     private $countings;
 
@@ -191,10 +204,10 @@ class Lecture
     /**
      * Set admin user
      *
-     * @param User|null $adminUserId
+     * @param User|null $adminUser
      * @return Lecture
      */
-    public function setAdminUserId($adminUser)
+    public function setAdminUser($adminUser)
     {
         $this->adminUser = $adminUser;
 
@@ -279,4 +292,79 @@ class Lecture
     {
         return $this->countings;
     }
+
+	/**
+	 * Used for serialization.
+	 *
+	 * @Serializer\VirtualProperty
+	 * @Serializer\SerializedName("status")
+	 *
+	 * @return string
+	 */
+	public function serializeStatus()
+	{
+		if ($this->phase === self::PHASE_OPEN)
+		{
+			return "voting_open";
+		}
+		else if ($this->phase === self::PHASE_RUNNING)
+		{
+			return "running";
+		}
+
+		return "ended";
+	}
+
+	/**
+	 * Used for serialization.
+	 *
+	 * @Serializer\VirtualProperty
+	 * @Serializer\SerializedName("admin")
+	 *
+	 * @return string
+	 */
+	public function serializeAdmin()
+	{
+		if ($this->phase === self::PHASE_OPEN)
+		{
+			return null;
+		}
+
+		if ($this->getAdminUser() === null)
+		{
+			return null;
+		}
+
+		return array(
+			'user_id' => $this->getAdminUser()->getPublicId(),
+			'username' => $this->getAdminUser()->getUsername(),
+		);
+	}
+
+	/**
+	 * Used for serialization.
+	 *
+	 * @Serializer\VirtualProperty
+	 * @Serializer\SerializedName("winner")
+	 *
+	 * @return string
+	 */
+	public function serializeWinner()
+	{
+		if ($this->phase !== self::PHASE_ENDED)
+		{
+			return null;
+		}
+
+		if ($this->getWinnerUser() === null)
+		{
+			return null;
+		}
+
+		return array(
+			'user_id' => $this->getWinnerUser()->getPublicId(),
+			'username' => $this->getWinnerUser()->getUsername(),
+		);
+	}
+
 }

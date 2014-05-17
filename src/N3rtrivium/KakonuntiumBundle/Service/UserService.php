@@ -51,7 +51,7 @@ class UserService
         $this->entityManager->persist($user);
 	    $this->entityManager->flush();
 
-	    return new CreateUserResponseModel($user);
+	    return new CreateUserResponseModel($user->getPublicId());
     }
     
 }

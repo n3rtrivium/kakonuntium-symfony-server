@@ -74,7 +74,7 @@ fos_rest:
     # add a content negotiation rule, enabling support for json/xml for the entire website
     format_listener:
         rules:
-            - { path: ^/, priorities: [ json, xml ], fallback_format: json, prefer_extension: false }
+            - { path: ^/, priorities: [ json ], fallback_format: json, prefer_extension: false }
     body_listener:
         decoders:
             json: fos_rest.decoder.json
