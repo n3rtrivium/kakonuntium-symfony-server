@@ -9,10 +9,10 @@ use N3rtrivium\KakonuntiumBundle\Entity\User;
  */
 class CreateUserResponseModel
 {
-	private $publicId;
+	private $userId;
 
-	public function __construct(User $user)
+	public function __construct($userId)
 	{
-		$this->publicId = $user->getPublicId();
+		$this->userId = $userId;
 	}
 }
