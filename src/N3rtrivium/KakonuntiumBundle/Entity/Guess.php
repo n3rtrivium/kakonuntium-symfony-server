@@ -7,9 +7,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Guess
- *
  * @ORM\Table(name="guesses", uniqueConstraints={
- *      @ORM\UniqueConstraint(name="unique_guess_per_lecture", columns={"user", "lecture"})
+ *     @ORM\UniqueConstraint(name="unique_guess_per_lecture", columns={"user_id", "lecture_id"})
  * })
  * @ORM\Entity(repositoryClass="N3rtrivium\KakonuntiumBundle\Repository\GuessRepository")
  */

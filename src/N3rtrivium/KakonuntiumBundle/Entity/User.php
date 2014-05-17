@@ -57,7 +57,7 @@ class User
     }
     
     /**
-     * @PrePersist
+     * @ORM\PrePersist
      */
     public function generatePublicIdOnPrePersist()
     {
