@@ -55,11 +55,16 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
-    
+
+sensio_framework_extra:
+    view:
+        annotations: false
+
 fos_rest:
     routing_loader:
         include_format: false
     view:
+        view_response_listener: true
         force_redirects:
             json: true
             xml: true
@@ -70,6 +75,12 @@ fos_rest:
     format_listener:
         rules:
             - { path: ^/, priorities: [ json, xml ], fallback_format: json, prefer_extension: false }
+    body_listener:
+        decoders:
+            json: fos_rest.decoder.json
+            xml: fos_rest.decoder.xml
+    body_converter:
+        enabled: true
     exception:
         codes:
             'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
