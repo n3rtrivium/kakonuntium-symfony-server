@@ -4,6 +4,8 @@ namespace N3rtrivium\KakonuntiumBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use N3rtrivium\KakonuntiumBundle\Entity\Lecture;
+use N3rtrivium\KakonuntiumBundle\Logic\GameAdminChooser;
+use N3rtrivium\KakonuntiumBundle\Repository\GuessRepository;
 use N3rtrivium\KakonuntiumBundle\Repository\LectureRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -21,6 +23,11 @@ class LectureService
 	private $lectureRepository;
 
 	/**
+	 * @var GuessRepository
+	 */
+	private $guessRepository;
+
+	/**
 	 * @var ValidatorInterface
 	 */
 	private $validator;
@@ -29,6 +36,7 @@ class LectureService
     {
         $this->entityManager = $entityManager;
 	    $this->lectureRepository = $entityManager->getRepository('N3rtriviumKakonuntiumBundle:Lecture');
+	    $this->guessRepository = $entityManager->getRepository('N3rtriviumKakonuntiumBundle:Guess');
 	    $this->validator = $validator;
     }
 
@@ -41,13 +49,29 @@ class LectureService
 	{
 		$now = new \DateTime();
 
-		// lecture has begun, change status to running
+		// lecture has begun, change status to RUNNING
 		if ($lecture->getPhase() === Lecture::PHASE_OPEN && $now >= $lecture->getBeginTime())
 		{
-			$lecture->setPhase(Lecture::PHASE_RUNNING);
-			// TODO: look at the guesses and choose a game admin
+			// look at the guesses and choose a game admin
+			// if there are no guesses, the game immediately changes to phase ENDED
+			$guessers = $this->guessRepository->findGuessingUsersByLecture($lecture);
+
+			try
+			{
+				$adminChooser = new GameAdminChooser($lecture, $guessers);
+				$user = $adminChooser->chooseAdminUser();
+
+				$lecture->setAdminUser($user);
+				$lecture->setPhase(Lecture::PHASE_RUNNING);
+			}
+			catch (\LengthException $e)
+			{
+				$lecture->setAdminUser(null);
+				$lecture->setWinnerUser(null);
+				$lecture->setPhase(Lecture::PHASE_ENDED);
+			}
 		}
-		// lecture ended, change status to ended
+		// lecture ended, change status to ENDED
 		else if ($lecture->getPhase() === Lecture::PHASE_RUNNING && $now >= $lecture->getEndTime())
 		{
 			$lecture->setPhase(Lecture::PHASE_ENDED);
