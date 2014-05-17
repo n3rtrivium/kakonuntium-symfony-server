@@ -13,7 +13,7 @@ users:
 # GET /lectures/{id}
 lectures:
     type: rest
-    resource: "N3rtrivium\KakonuntiumBundle\Controller\LectureController"
+    resource: "N3rtrivium\KakonuntiumBundle\Controller\\LectureController"
 
 # GET /lectures/{id}/guesses
 # PUT or POST /lectures/{id}/guesses

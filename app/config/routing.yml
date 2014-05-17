@@ -1,4 +1,4 @@
 n3rtrivium_kakonuntium:
     type: rest
     prefix: /
-    resource: "@N3rtriviumKakonuntiumBundle/Resources/config/routes.yml"
+    resource: "@N3rtriviumKakonuntiumBundle/Resources/config/routing.yml"
