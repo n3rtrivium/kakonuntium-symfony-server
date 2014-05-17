@@ -13,7 +13,7 @@ use N3rtrivium\KakonuntiumBundle\Entity\Lecture;
  */
 class LectureRepository extends EntityRepository
 {
-	public function findFutureUpcomingOrCurrentLectures()
+	private function createUpcomingOrCurrentLecturesQueryBuilder()
 	{
 		$maxAllowedFutureDate = new \DateTime();
 		$maxAllowedFutureDate->add(new \DateInterval('P2D'));
@@ -23,15 +23,35 @@ class LectureRepository extends EntityRepository
 
 		// return only lectures where the beginTime is not too far in the future
 		// OR phase is ENDED and they are not too old - otherwise, filter ENDED
-		$query = $this->createQueryBuilder('l')
+		return $this->createQueryBuilder('l')
 			->where('l.phase = :phaseEnded AND l.endTime >= :minPastTime')
 			->orWhere('l.beginTime <= :maxFutureTime AND l.phase != :phaseEnded')
 			->setParameter('phaseEnded', Lecture::PHASE_ENDED)
 			->setParameter('maxFutureTime', $maxAllowedFutureDate)
 			->setParameter('minPastTime', $minAllowedEndedPastDate)
-			->orderBy('l.beginTime', 'ASC')
+			->orderBy('l.beginTime', 'DESC');
+	}
+
+	public function findAllDescending()
+	{
+		$query = $this->createQueryBuilder('l')
+			->orderBy('l.beginTime', 'DESC')
 			->getQuery();
 
 		return $query->getResult();
+	}
+
+	public function findFutureUpcomingOrCurrentLectures()
+	{
+		return $this->createUpcomingOrCurrentLecturesQueryBuilder()->getQuery()->getResult();
+	}
+
+	public function findOneUpcomingOrCurrentLecture()
+	{
+		$builder = $this->createUpcomingOrCurrentLecturesQueryBuilder();
+		$query = $builder->setMaxResults(1)
+			->getQuery();
+
+		return $query->getOneOrNullResult();
 	}
 }

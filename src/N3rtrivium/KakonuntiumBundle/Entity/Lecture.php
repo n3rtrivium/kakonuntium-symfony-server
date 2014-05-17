@@ -330,6 +330,11 @@ class Lecture
 			return null;
 		}
 
+		if ($this->getAdminUser() === null)
+		{
+			return null;
+		}
+
 		return array(
 			'user_id' => $this->getAdminUser()->getPublicId(),
 			'username' => $this->getAdminUser()->getUsername(),
@@ -347,6 +352,11 @@ class Lecture
 	public function serializeWinner()
 	{
 		if ($this->phase !== self::PHASE_ENDED)
+		{
+			return null;
+		}
+
+		if ($this->getWinnerUser() === null)
 		{
 			return null;
 		}
