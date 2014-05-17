@@ -45,7 +45,7 @@ class UserService
 	    $errorMessages = $this->validator->validate($user);
 	    if (count($errorMessages) > 0)
 	    {
-
+			return $errorMessages;
 	    }
         
         $this->entityManager->persist($user);
