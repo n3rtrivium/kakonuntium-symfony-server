@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use N3rtrivium\KakonuntiumBundle\Repository\UserRepository;
 use N3rtrivium\KakonuntiumBundle\Entity\User;
 use N3rtrivium\KakonuntiumBundle\Model\CreateUserResponseModel;
+use Symfony\Component\Validator\ValidatorInterface;
 
 class UserService
 {
@@ -18,11 +19,17 @@ class UserService
 	 * @var UserRepository
 	 */
 	private $userRepository;
+
+	/**
+	 * @var ValidatorInterface
+	 */
+	private $validator;
     
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, ValidatorInterface $validator)
     {
         $this->entityManager = $entityManager;
         $this->userRepository = $entityManager->getRepository('N3rtriviumKakonuntiumBundle:User');
+	    $this->validator = $validator;
     }
 
 	/**
@@ -34,6 +41,12 @@ class UserService
     {
         $user = new User();
         $user->setUsername($username);
+
+	    $errorMessages = $this->validator->validate($user);
+	    if (count($errorMessages) > 0)
+	    {
+
+	    }
         
         $this->entityManager->persist($user);
 	    $this->entityManager->flush();
