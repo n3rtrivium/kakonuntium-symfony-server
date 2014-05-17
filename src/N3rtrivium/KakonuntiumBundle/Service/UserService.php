@@ -23,14 +23,21 @@ class UserService
         $this->entityManager = $entityManager;
         $this->userRepository = $entityManager->getRepository('N3rtriviumKakonuntiumBundle:User');
     }
-    
-    public function createUser($username)
+
+	/**
+	 * @param $username
+	 *
+	 * @return User
+	 */
+	public function createUser($username)
     {
         $user = new User();
         $user->setUsername($username);
         
         $this->entityManager->persist($user);
-        return $user;
+	    $this->entityManager->flush();
+
+	    return $user;
     }
     
 }
