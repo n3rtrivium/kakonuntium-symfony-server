@@ -5,6 +5,7 @@ namespace N3rtrivium\KakonuntiumBundle\Service;
 use Doctrine\ORM\EntityManager;
 use N3rtrivium\KakonuntiumBundle\Repository\UserRepository;
 use N3rtrivium\KakonuntiumBundle\Entity\User;
+use N3rtrivium\KakonuntiumBundle\Model\CreateUserResponseModel;
 
 class UserService
 {
@@ -37,7 +38,7 @@ class UserService
         $this->entityManager->persist($user);
 	    $this->entityManager->flush();
 
-	    return $user;
+	    return new CreateUserResponseModel($user);
     }
     
 }

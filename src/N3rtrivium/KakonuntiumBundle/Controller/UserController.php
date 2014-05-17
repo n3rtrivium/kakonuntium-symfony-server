@@ -6,14 +6,13 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\View;
 use Symfony\Component\HttpFoundation\Request;
-use N3rtrivium\KakonuntiumBundle\Model\CreateUserResponseModel;
 
 class UserController extends FOSRestController
 {
     
     /**
      * @Post("/users")
-     * @View()
+     * @View
      */ 
     public function createUserAction(Request $request)
     {
@@ -21,10 +20,10 @@ class UserController extends FOSRestController
 		    throw new \Exception("missing username key");
 	    }
 
-        $userService = $this->container->get('n3rtrivium_kakonuntium.service.users');
-        $user = $userService->createUser($request->request->get('username'));
+        $userService = $this->container->get('n3rtrivium_kakonuntium.users');
+        $response = $userService->createUser($request->request->get('username'));
 
-	    return new CreateUserResponseModel($user->getPublicId());
+	    return $response;
     }
     
 }
