@@ -3,6 +3,7 @@
 namespace N3rtrivium\KakonuntiumBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use N3rtrivium\KakonuntiumBundle\Entity\Lecture;
 
 /**
  * CountRepository
@@ -12,4 +13,28 @@ use Doctrine\ORM\EntityRepository;
  */
 class CountRepository extends EntityRepository
 {
+	/**
+	 * @param Lecture $lecture
+	 *
+	 * @return array
+	 */
+	public function findSummedCountingsByLecture(Lecture $lecture)
+	{
+		$resultSet = array();
+
+		$allCountings = $lecture->getCountings();
+		foreach ($allCountings as $count)
+		{
+			$which = $count->getWhich();
+			if (!isset($resultSet[$which]))
+			{
+				$resultSet[$which] = 0;
+				continue;
+			}
+
+			$resultSet[$which]++;
+		}
+
+		return $resultSet;
+	}
 }

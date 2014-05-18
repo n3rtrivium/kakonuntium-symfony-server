@@ -3,6 +3,8 @@
 namespace N3rtrivium\KakonuntiumBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
+use N3rtrivium\KakonuntiumBundle\Entity\Lecture;
 
 /**
  * GuessRepository
@@ -12,4 +14,22 @@ use Doctrine\ORM\EntityRepository;
  */
 class GuessRepository extends EntityRepository
 {
+	/**
+	 * @param Lecture $lecture
+	 *
+	 * @return array
+	 */
+	public function findGuessingUsersByLecture(Lecture $lecture)
+	{
+		$query = $this->getEntityManager()->createQueryBuilder()
+			->select('u')
+			->from('N3rtriviumKakonuntiumBundle:User', 'u')
+			->innerJoin('u.guesses', 'g')
+			->where('g.lecture = :lecture')
+			->setParameter('lecture', $lecture)
+			->getQuery();
+
+		return $query->getResult();
+	}
+
 }
