@@ -18,8 +18,23 @@ class CountRepository extends EntityRepository
 	 *
 	 * @return array
 	 */
-	public function findCountingsByLecture(Lecture $lecture)
+	public function findSummedCountingsByLecture(Lecture $lecture)
 	{
+		$resultSet = array();
 
+		$allCountings = $lecture->getCountings();
+		foreach ($allCountings as $count)
+		{
+			$which = $count->getWhich();
+			if (!isset($resultSet[$which]))
+			{
+				$resultSet[$which] = 0;
+				continue;
+			}
+
+			$resultSet[$which]++;
+		}
+
+		return $resultSet;
 	}
 }

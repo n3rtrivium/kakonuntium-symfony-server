@@ -20,6 +20,7 @@ class GameWinnerDetector
 	 */
 	public function determineWinner()
 	{
+		// TODO: choose a winner
 		return null;
 	}
 }

@@ -83,7 +83,7 @@ class LectureService
 		else if ($lecture->getPhase() === Lecture::PHASE_RUNNING && $now >= $lecture->getEndTime())
 		{
 			// look at the counts and guesses.. then choose a winner
-			$countings = $this->countRepository->findCountingsByLecture($lecture);
+			$countings = $this->countRepository->findSummedCountingsByLecture($lecture);
 			$guesses = $lecture->getGuesses();
 
 			$winningDetector = new GameWinnerDetector($countings, $guesses);
