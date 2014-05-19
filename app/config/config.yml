@@ -87,3 +87,9 @@ fos_rest:
             'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
 #        messages:
 #            'Acme\HelloBundle\Exception\MyExceptionWithASafeMessage': true
+
+n3rtrivium_kakonuntium:
+    allowed_guessing_identifiers:
+        - haui
+        - pieps
+    lectures_ical_source: "http://almaty.fh-joanneum.at/stundenplan/search.php?q=studiengang:ASE+jahr:2013+-ort:ASY+gruppe:ALL+-ort:Online"
