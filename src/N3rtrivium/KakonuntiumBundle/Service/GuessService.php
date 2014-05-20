@@ -5,10 +5,10 @@ namespace N3rtrivium\KakonuntiumBundle\Service;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Validator\ValidatorInterface;
 use N3rtrivium\KakonuntiumBundle\Entity\Lecture;
-use Doctrine\ORM\EntityManager;
+use N3rtrivium\KakonuntiumBundle\Entity\User;
 use N3rtrivium\KakonuntiumBundle\Repository\GuessRepository;
-use Symfony\Component\Validator\ValidatorInterface;
 use N3rtrivium\KakonuntiumBundle\Model\LectureGuessesResponseModel;
+use N3rtrivium\KakonuntiumBundle\Model\LectureSingleGuessResponseModel;
 
 class GuessService
 {
@@ -44,6 +44,19 @@ class GuessService
         {
             $result->addGuess($guess->getUser()->getId(), $guess->getUser()->getUsername(),
                 $guess->getWhich(), $guess->getQuantity());
+        }
+        
+        return $result;
+    }
+    
+    public function retrieveUserGuessOfLecture(Lecture $lecture, User $user)
+    {
+        $result = new LectureSingleGuessResponseModel();
+        $guesses = $this->guessRepository->findAllGuessesOfUserByLecture($lecture, $user);
+        
+        foreach ($guesses as $guess)
+        {
+            $result->addGuess($guess->getWhich(), $guess->getQuantity());
         }
         
         return $result;

@@ -51,7 +51,8 @@ class GuessController extends FOSRestController
      */ 
     public function showGuessesOfUserAction(Lecture $lecture, User $user)
     {
-        /* return: {“guesses”: {“pieps”: 1, “haui”: 1}} */
+        $lectureService = $this->container->get('n3rtrivium_kakonuntium.guesses');
+		return $lectureService->retrieveUserGuessOfLecture($lecture, $user);
     }
     
     /**
