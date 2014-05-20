@@ -31,5 +31,10 @@ class GuessRepository extends EntityRepository
 
 		return $query->getResult();
 	}
+	
+	public function findAllGuessesByLecture(Lecture $lecture)
+	{
+	    return $lecture->guesses();
+	}
 
 }

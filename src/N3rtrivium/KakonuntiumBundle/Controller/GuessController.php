@@ -10,6 +10,7 @@ use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\View;
 use N3rtrivium\KakonuntiumBundle\Entity\Lecture;
 use N3rtrivium\KakonuntiumBundle\Entity\User;
+use Symfony\Component\HttpFoundation\Request;
 
 class GuessController extends FOSRestController
 {
@@ -21,7 +22,8 @@ class GuessController extends FOSRestController
      */ 
     public function showGuessesOfLectureAction(Lecture $lecture)
     {
-        
+        $lectureService = $this->container->get('n3rtrivium_kakonuntium.guesses');
+		return $lectureService->retrieveGuessesOfLecture($lecture);
     }
     
     /**
@@ -30,9 +32,15 @@ class GuessController extends FOSRestController
      * @ParamConverter("lecture", class="N3rtriviumKakonuntiumBundle:Lecture")
      * @View
      */ 
-    public function saveGuessesAction(Lecture $lecture)
+    public function saveGuessesAction(Request $request, Lecture $lecture)
     {
-        
+        /* input: {
+            “userId”: “player”, 
+            “guesses”: [
+                {‘guessOn’: ‘who to guess on’, “count”: 12},
+            {‘guessOn’: ‘other guy’, “count”: 10}
+            ]
+        } */
     }
     
     /**
@@ -43,7 +51,7 @@ class GuessController extends FOSRestController
      */ 
     public function showGuessesOfUserAction(Lecture $lecture, User $user)
     {
-        
+        /* return: {“guesses”: {“pieps”: 1, “haui”: 1}} */
     }
     
     /**
