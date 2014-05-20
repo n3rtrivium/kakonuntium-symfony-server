@@ -11,11 +11,11 @@ class LectureSingleGuessResponseModel
 
 	public function __construct()
 	{
-		$this->guesses = new \stdClass();
+		$this->guesses = array();
 	}
 	
 	public function addGuess($which, $count)
 	{
-	    $this->guesses->{$which} = $count;
+	    $this->guesses[] = new LectureGuessesDataResponseModel($which, $count);
 	}
 }

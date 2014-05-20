@@ -39,8 +39,7 @@ class GuessService
     {
         $result = new LectureGuessesResponseModel();
         $guesses = $this->guessRepository->findAllGuessesByLecture($lecture);
-        
-        $sortedGuesses = array();
+
         foreach ($guesses as $guess)
         {
             $result->addGuess($guess->getUser()->getId(), $guess->getUser()->getUsername(),

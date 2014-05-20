@@ -37,8 +37,8 @@ class GuessController extends FOSRestController
         /* input: {
             “userId”: “player”, 
             “guesses”: [
-                {‘guessOn’: ‘who to guess on’, “count”: 12},
-            {‘guessOn’: ‘other guy’, “count”: 10}
+                {‘guess_on’: ‘who to guess on’, “count”: 12},
+            {‘guess_on’: ‘other guy’, “count”: 10}
             ]
         } */
     }
@@ -46,12 +46,14 @@ class GuessController extends FOSRestController
     /**
      * @Get("/lectures/{lecture}/guesses/{user}")
      * @ParamConverter("lecture", class="N3rtriviumKakonuntiumBundle:Lecture")
-     * @ParamConverter("user", class="N3rtriviumKakonuntiumBundle:User", options={"id"="public_id"})
+     * @ParamConverter("user", class="N3rtriviumKakonuntiumBundle:User", options={
+     *     "repository_method"="findUserByPublicId"
+     * })
      * @View
      */ 
     public function showGuessesOfUserAction(Lecture $lecture, User $user)
     {
-        $guessService = $this->container->get('n3rtrivium_kakonuntium.guesses');
+	    $guessService = $this->container->get('n3rtrivium_kakonuntium.guesses');
 		return $guessService->retrieveUserGuessOfLecture($lecture, $user);
     }
     

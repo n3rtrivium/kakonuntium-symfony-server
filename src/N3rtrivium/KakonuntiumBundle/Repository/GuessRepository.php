@@ -35,7 +35,14 @@ class GuessRepository extends EntityRepository
 	
 	public function findAllGuessesByLecture(Lecture $lecture)
 	{
-	    return $lecture->guesses();
+		$query = $this->getEntityManager()->createQueryBuilder()
+			->select('g')
+			->from('N3rtriviumKakonuntiumBundle:Guess', 'g')
+			->where('g.lecture = :lecture')
+			->setParameter('lecture', $lecture)
+			->getQuery();
+
+		return $query->getResult();
 	}
 	
 	public function findAllGuessesOfUserByLecture(Lecture $lecture, User $user)

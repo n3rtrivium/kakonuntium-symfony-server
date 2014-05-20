@@ -18,17 +18,15 @@ class LectureGuessesResponseModel
 	{
 	    if (!isset($this->guesses[$userId]))
 	    {
-	        $sortedGuesses[$userId] = array(
+		    $this->guesses[$userId] = array(
                 'user_id' => $userId,
                 'username' => $username,
                 'guesses' => array()
             );
 	    }
 	    
-	    $guessOn = new \stdClass();
-	    $guessOn->guessOn = $which;
-	    $guessOn->count = $count
-	    
-	    $sortedGuesses[$userId]['guesses'][] = $guessOn;
+	    $guessOn = new LectureGuessesDataResponseModel($which, $count);
+
+		$this->guesses[$userId]['guesses'][] = $guessOn;
 	}
 }

@@ -12,4 +12,9 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserRepository extends EntityRepository
 {
+	public function findUserByPublicId($publicId)
+	{
+		return $this->findOneBy(array('publicId' => $publicId));
+	}
+
 }
