@@ -22,8 +22,8 @@ class GuessController extends FOSRestController
      */ 
     public function showGuessesOfLectureAction(Lecture $lecture)
     {
-        $lectureService = $this->container->get('n3rtrivium_kakonuntium.guesses');
-		return $lectureService->retrieveGuessesOfLecture($lecture);
+        $guessService = $this->container->get('n3rtrivium_kakonuntium.guesses');
+		return $guessService->retrieveGuessesOfLecture($lecture);
     }
     
     /**
@@ -51,8 +51,8 @@ class GuessController extends FOSRestController
      */ 
     public function showGuessesOfUserAction(Lecture $lecture, User $user)
     {
-        $lectureService = $this->container->get('n3rtrivium_kakonuntium.guesses');
-		return $lectureService->retrieveUserGuessOfLecture($lecture, $user);
+        $guessService = $this->container->get('n3rtrivium_kakonuntium.guesses');
+		return $guessService->retrieveUserGuessOfLecture($lecture, $user);
     }
     
     /**
