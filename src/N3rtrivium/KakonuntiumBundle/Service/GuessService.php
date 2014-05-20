@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\Validator\ValidatorInterface;
 use N3rtrivium\KakonuntiumBundle\Entity\Lecture;
 use N3rtrivium\KakonuntiumBundle\Entity\User;
+use N3rtrivium\KakonuntiumBundle\Entity\Count;
 use N3rtrivium\KakonuntiumBundle\Repository\GuessRepository;
 use N3rtrivium\KakonuntiumBundle\Model\LectureGuessesResponseModel;
 use N3rtrivium\KakonuntiumBundle\Model\LectureSingleGuessResponseModel;
@@ -60,5 +61,15 @@ class GuessService
         }
         
         return $result;
+    }
+    
+    public function addCount(Lecture $lecture, $which)
+    {
+        $count = new Count();
+        $count->setLecture($lecture);
+        $count->setWhich($which);
+        
+        $this->entityManager->persist($count);
+        $this->entityManager->flush($count);
     }
 }

@@ -62,7 +62,8 @@ class GuessController extends FOSRestController
      */ 
     public function countActualAction(Lecture $lecture, $which)
     {
-        
+        $guessService = $this->container->get('n3rtrivium_kakonuntium.guesses');
+		return $guessService->addCount($lecture, $which);
     }
     
 }
