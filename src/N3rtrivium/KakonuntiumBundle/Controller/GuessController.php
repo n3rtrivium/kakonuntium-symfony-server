@@ -73,7 +73,11 @@ class GuessController extends FOSRestController
             $which = strtolower($guess['guess_on']);
             $filteredGuesses[$which] = intval($guess['count']);
         }
-        
+
+	    // Check lecture as a status update may be needed
+	    $lectureService = $this->container->get('n3rtrivium_kakonuntium.lectures');
+	    $lectureService->doCheckPhaseForLecture($lecture);
+
         $guessService = $this->container->get('n3rtrivium_kakonuntium.guesses');
 		return $guessService->addUserGuess($lecture, $user, $filteredGuesses);
     }
@@ -99,6 +103,10 @@ class GuessController extends FOSRestController
      */ 
     public function countActualAction(Lecture $lecture, $which)
     {
+	    // Check lecture as a status update may be needed
+	    $lectureService = $this->container->get('n3rtrivium_kakonuntium.lectures');
+	    $lectureService->doCheckPhaseForLecture($lecture);
+
         $guessService = $this->container->get('n3rtrivium_kakonuntium.guesses');
 		return $guessService->addCount($lecture, $which);
     }

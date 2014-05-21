@@ -48,6 +48,11 @@ class LectureService
 	    $this->validator = $validator;
     }
 
+	public function doCheckPhaseForLecture(Lecture $lecture)
+	{
+		$this->updateLecturePhase($lecture);
+	}
+
 	/**
 	 * Updates the Lecture's details, if necessary.
 	 *
