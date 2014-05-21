@@ -10,7 +10,9 @@ use JMS\Serializer\JsonSerializationVisitor;
 /**
  * Lecture
  *
- * @ORM\Table(name="lectures")
+ * @ORM\Table(name="lectures"uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="unique_calendar_hash", columns={"ical_hash"})
+ * })
  * @ORM\Entity(repositoryClass="N3rtrivium\KakonuntiumBundle\Repository\LectureRepository")
  */
 class Lecture
@@ -80,7 +82,7 @@ class Lecture
     /**
      * @var string
      *
-     * @ORM\Column(name="ical_hash", type="string", length=32)
+     * @ORM\Column(name="ical_hash", type="string", length=32, nullable=false)
      */
     private $calendarHash;
     
