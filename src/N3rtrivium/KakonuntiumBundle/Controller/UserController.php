@@ -16,7 +16,8 @@ class UserController extends FOSRestController
      */ 
     public function createUserAction(Request $request)
     {
-	    if (!$request->request->has('username')) {
+	    if (!$request->request->has('username'))
+	    {
 		    throw new \Exception("missing username key");
 	    }
 
