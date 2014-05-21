@@ -84,7 +84,7 @@ class Guess
     /**
      * Set user
      *
-     * @param \stdClass $user
+     * @param User $user
      * @return Guess
      */
     public function setUser($user)
@@ -97,7 +97,7 @@ class Guess
     /**
      * Get user
      *
-     * @return \stdClass 
+     * @return User
      */
     public function getUser()
     {
@@ -107,7 +107,7 @@ class Guess
     /**
      * Set lecture
      *
-     * @param \stdClass $lecture
+     * @param Lecture $lecture
      * @return Guess
      */
     public function setLecture($lecture)
@@ -120,7 +120,7 @@ class Guess
     /**
      * Get lecture
      *
-     * @return \stdClass 
+     * @return Lecture
      */
     public function getLecture()
     {

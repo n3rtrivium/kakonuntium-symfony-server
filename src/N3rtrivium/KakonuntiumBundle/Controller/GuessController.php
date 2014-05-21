@@ -71,7 +71,7 @@ class GuessController extends FOSRestController
             }
             
             $which = strtolower($guess['guess_on']);
-            $filteredGuesses[] = intval($guess['count']);
+            $filteredGuesses[$which] = intval($guess['count']);
         }
         
         $guessService = $this->container->get('n3rtrivium_kakonuntium.guesses');

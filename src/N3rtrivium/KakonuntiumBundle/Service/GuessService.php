@@ -65,6 +65,11 @@ class GuessService
     
     public function addUserGuess(Lecture $lecture, User $user, array $guesses)
     {
+	    if ($lecture->getPhase() !== $lecture::PHASE_OPEN)
+	    {
+		    throw new \RuntimeException('submitting of guesses not allowed in current lecture phase');
+	    }
+
         $alreadySubmittedGuesses = $this->guessRepository->findAllGuessesOfUserByLecture($lecture, $user);
 
         // if there is a guess for a item already submitted, overwrite the already existing guess
@@ -84,7 +89,7 @@ class GuessService
             $guess->setLecture($lecture);
             $guess->setUser($user);
             $guess->setWhich($guessWhich);
-            $guess->setQuantity($count);
+            $guess->setQuantity($guessCount);
             
             $this->entityManager->persist($guess);
         }
@@ -94,6 +99,11 @@ class GuessService
     
     public function addCount(Lecture $lecture, $which)
     {
+	    if ($lecture->getPhase() !== $lecture::PHASE_RUNNING)
+	    {
+		    throw new \RuntimeException('submitting of countings not allowed in current lecture phase');
+	    }
+
         $count = new Count();
         $count->setLecture($lecture);
         $count->setWhich($which);
