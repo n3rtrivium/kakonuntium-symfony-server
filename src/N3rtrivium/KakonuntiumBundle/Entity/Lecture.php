@@ -78,6 +78,13 @@ class Lecture
     private $winnerUser;
     
     /**
+     * @var string
+     *
+     * @ORM\Column(name="ical_hash", type="string", length=32)
+     */
+    private $calendarHash;
+    
+    /**
      * @var ArrayCollection
      * 
      * @ORM\OneToMany(targetEntity="Guess", mappedBy="lecture")
@@ -245,6 +252,29 @@ class Lecture
     public function getWinnerUser()
     {
         return $this->winnerUser;
+    }
+    
+    /**
+     * Set calendar hash
+     *
+     * @param string $calendarHash
+     * @return Lecture
+     */
+    public function setCalendarHash($calendarHash)
+    {
+        $this->calendarHash = $calendarHash;
+
+        return $this;
+    }
+
+    /**
+     * Get calendar hash
+     *
+     * @return string 
+     */
+    public function getCalendarHash()
+    {
+        return $this->calendarHash;
     }
     
     /**
