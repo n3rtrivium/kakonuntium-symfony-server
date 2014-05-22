@@ -19,8 +19,8 @@ class ImportCalendarCommand extends ContainerAwareCommand
                 'maxFutureDate',
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'Y-m-d string specifing the maximum future date of lectures to be imported',
-                InputOption::VALUE_NONE
+                'Y-m-d string specifing the maximum future date of lectures to be imported'
+                //InputOption::VALUE_NONE
             );
     }
 
@@ -33,23 +33,29 @@ class ImportCalendarCommand extends ContainerAwareCommand
         $icalData = file_get_contents($icalPath);
         if ($icalData === false)
         {
-            $output->writeln("error: could not read ical file from source");
+            $output->writeln("<error>error: could not read ical file from source</error>");
             return;
         }
         
         $calendar = Reader::read($icalData);
         $output->writeln("ical data has been read into memory");
         
-        $maxFutureDate = new \DateTime();
+        $today = new \DateTime('midnight', new \DateTimeZone('Europe/Vienna'));
+        
+        $maxFutureDate = new \DateTime('midnight', new \DateTimeZone('Europe/Vienna'));
         $maxFutureDate->add(new \DateInterval('P1Y'));
+        
         if ($input->getOption('maxFutureDate'))
         {
-            $maxFutureDate = \DateTime::createFromFormat('Y-m-d', $input->getOption('maxFutureDate'));
+            $maxFutureDate = \DateTime::createFromFormat('Y-m-d', $input->getOption('maxFutureDate'),
+                new \DateTimeZone('Europe/Vienna'));
             if ($maxFutureDate === false)
             {
-                $output->writeln("error: could not read maxFutureDate (required format: Y-m-d)");
+                $output->writeln("<error>error: could not read maxFutureDate (required format: Y-m-d)</error>");
                 return;
             }
+            
+            $output->writeln(sprintf('parsing explicitly only events until "%s"', $maxFutureDate->format('Y-m-d')));
         }
         else
         {
@@ -57,16 +63,52 @@ class ImportCalendarCommand extends ContainerAwareCommand
         }
         
         // Expand recurring events
-        $calendar->expand(new \DateTime(), $maxFutureDate);
+        $calendar->expand($today, $maxFutureDate);
         
         $foundEvents = array();
         foreach ($calendar->VEVENT as $event)
         {
-            $event->DTSTART;
-            $event->UID;
-            $event->DTEND;
-        }
+            // if already done, skip it
+            if ($event->DTSTART->getDateTime() < $today)
+            {
+                if ($output->isVerbose())
+                {
+                    $output->writeln(sprintf('event "%s" of "%s" already ended, ignoring', $event->SUMMARY,
+                        $event->DTSTART->getDateTime()->format('Y-m-d')));
+                }
+                    
+                continue;
+            }
+            
+            // if too far in the future, skip it
+            if ($event->DTSTART->getDateTime() > $maxFutureDate)
+            {
+                if ($output->isVerbose())
+                {
+                    $output->writeln(sprintf('event "%s" of "%s" too far in future, ignoring', $event->SUMMARY,
+                        $event->DTSTART->getDateTime()->format('Y-m-d')));
+                }
+                    
+                continue;
+            }
 
-        $output->writeln($text);
+            $eventHash = md5($event->UID . 'x' . $event->DTSTART . 'x' . $event->DTEND);
+            
+            $startTime = $event->DTSTART->getDateTime();
+            $startTime->setTimezone(new \DateTimeZone('Europe/Vienna'));
+            
+            $endTime = $event->DTEND->getDateTime();
+            $endTime->setTimezone(new \DateTimeZone('Europe/Vienna'));
+            
+            $foundEvents[] = array(
+                'hash' => $eventHash,
+                'title' => $event->SUMMARY,
+                'start' => $startTime,
+                'end' => $endTime
+            );
+            
+            $output->writeln(sprintf('found event %s: "%s", duration %s to %s', $eventHash, $event->SUMMARY,
+                $startTime->format('Y-m-d H:i'), $endTime->format('Y-m-d H:i')));
+        }
     }
 }
