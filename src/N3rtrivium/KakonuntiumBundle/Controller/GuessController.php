@@ -5,7 +5,6 @@ namespace N3rtrivium\KakonuntiumBundle\Controller;
 use FOS\RestBundle\Controller\FOSRestController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use FOS\RestBundle\Controller\Annotations\Get;
-use FOS\RestBundle\Controller\Annotations\Put;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\View;
 use N3rtrivium\KakonuntiumBundle\Entity\Lecture;
@@ -27,7 +26,6 @@ class GuessController extends FOSRestController
     }
     
     /**
-     * @Put("/lectures/{lecture}/guesses")
      * @Post("/lectures/{lecture}/guesses")
      * @ParamConverter("lecture", class="N3rtriviumKakonuntiumBundle:Lecture")
      * @View
@@ -53,6 +51,11 @@ class GuessController extends FOSRestController
         
         $filteredGuesses = array();
         $guesses = $request->request->get('guesses');
+	    if (!count($guesses))
+	    {
+		    throw new \Exception("no guesses to submit");
+	    }
+
         foreach ($guesses as $guess)
         {
             if (!isset($guess['guess_on']))

@@ -65,7 +65,7 @@ class GuessService
     
     public function addUserGuess(Lecture $lecture, User $user, array $guesses)
     {
-	    if ($lecture->getPhase() !== $lecture::PHASE_OPEN)
+	    if ($lecture->getPhase() !== Lecture::PHASE_OPEN)
 	    {
 		    throw new \RuntimeException('submitting of guesses not allowed in current lecture phase');
 	    }
