@@ -2,7 +2,7 @@
 
 namespace N3rtrivium\KakonuntiumBundle\Logic;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use N3rtrivium\KakonuntiumBundle\Entity\User;
 
 /**
@@ -11,7 +11,7 @@ use N3rtrivium\KakonuntiumBundle\Entity\User;
 class GameWinnerDetector
 {
 
-	public function __construct(array $countings, ArrayCollection $guesses)
+	public function __construct(array $countings, Collection $guesses)
 	{
 
 	}

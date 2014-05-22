@@ -54,4 +54,9 @@ class UserService
 	    return new CreateUserResponseModel($user->getPublicId());
     }
     
+    public function retrieveUserByPublicId($publicId)
+    {
+        return $this->userRepository->findUserByPublicId($publicId);
+    }
+    
 }
