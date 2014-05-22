@@ -89,7 +89,7 @@ class Lecture
     /**
      * @var ArrayCollection
      * 
-     * @ORM\OneToMany(targetEntity="Guess", mappedBy="lecture")
+     * @ORM\OneToMany(targetEntity="Guess", mappedBy="lecture", cascade={"remove"})
      * @Serializer\Exclude
      **/
     private $guesses;
@@ -97,7 +97,7 @@ class Lecture
     /**
      * @var ArrayCollection
      * 
-     * @ORM\OneToMany(targetEntity="Count", mappedBy="lecture")
+     * @ORM\OneToMany(targetEntity="Count", mappedBy="lecture", cascade={"remove"})
      * @Serializer\Exclude
      **/
     private $countings;
