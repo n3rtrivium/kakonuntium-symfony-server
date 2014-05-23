@@ -1,9 +1,4 @@
 services:
-    kernel.listener.cors_listener:
-        class: N3rtrivium\KakonuntiumBundle\EventListener\CorsResponseListener
-        tags:
-            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
-
     n3rtrivium_kakonuntium.users:
         class: N3rtrivium\KakonuntiumBundle\Service\UserService
         arguments:
