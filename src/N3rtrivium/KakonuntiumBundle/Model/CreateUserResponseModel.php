@@ -7,10 +7,10 @@ namespace N3rtrivium\KakonuntiumBundle\Model;
  */
 class CreateUserResponseModel
 {
-	private $publicId;
+	private $userId;
 
 	public function __construct($userId)
 	{
-		$this->publicId = $userId;
+		$this->userId = $userId;
 	}
 }
