@@ -100,7 +100,7 @@ class ImportCalendarCommand extends ContainerAwareCommand
             $endTime = $event->DTEND->getDateTime();
             $endTime->setTimezone(new \DateTimeZone('Europe/Vienna'));
             
-            $foundEvents[] = array(
+            $foundEvents[$eventHash] = array(
                 'hash' => $eventHash,
                 'title' => $event->SUMMARY,
                 'start' => $startTime,
@@ -110,5 +110,60 @@ class ImportCalendarCommand extends ContainerAwareCommand
             $output->writeln(sprintf('found event %s: "%s", duration %s to %s', $eventHash, $event->SUMMARY,
                 $startTime->format('Y-m-d H:i'), $endTime->format('Y-m-d H:i')));
         }
+        
+        $lectureRepository = $entityManager->getRepository('N3rtriviumKakonuntiumBundle:Lecture');
+        $foundLectures = $lectureRepository->findOpenLecturesBetweenDates($today, $maxFutureDate);
+        
+        $output->writeln('sorting out events from database which have not been updated');
+        
+        $knownHashes = array(); // hashes for events that should NOT be inserted into the DB
+        foreach ($foundLectures as $foundLecture)
+        {
+            if (!array_key_exists($foundLecture->getCalendarHash(), $foundEvents))
+            {
+                $output->writeln(sprintf('removing DB event %s: "%s", duration %s to %s', $foundLecture->getCalendarHash(),
+                    $foundLecture->getName(), $foundLecture->getBeginTime()->format('Y-m-d H:i'),
+                    $foundLecture->getEndTime()->format('Y-m-d H:i')));
+                
+                $this->entityManager->remove($foundLecture);
+                continue;
+            }
+            
+            $knownHashes[] = $foundLecture->getCalendarHash();
+        }
+        
+        $this->entityManager->flush();
+        
+        $output->writeln('removed specified events from database');
+        $output->writeln('sorting out hashes not in the database (for event insertion)');
+        
+        foreach ($foundEvents as $hash => $event)
+        {
+            if (in_array($hash, $knownHashes))
+            {
+                $output->writeln(sprintf('insertion: skipping hash %s', $hash));
+                continue;
+            }
+            
+            $lecture = new Lecture();
+            $lecture->setName($event['title']);
+            $lecture->setBeginTime($event['start']);
+            $lecture->setEndTime($event['end']);
+            $lecture->setPhase(Lecture::PHASE_OPEN);
+            $lecture->setCalendarHash($hash);
+            
+            $output->writeln(sprintf('adding DB event %s: "%s", duration %s to %s', $lecture->getCalendarHash(),
+                    $lecture->getName(), $lecture->getBeginTime()->format('Y-m-d H:i'),
+                    $lecture->getEndTime()->format('Y-m-d H:i')));
+
+            $this->entityManager->persist($lecture);
+        }
+        
+        $output->writeln('writing new events to database');
+        $this->entityManager->flush($lecture);
+        
+        $output->writeln('finished!');
     }
+    
+    
 }
