@@ -42,7 +42,7 @@ class Guess
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="insertTime", type="datetime")
+     * @ORM\Column(name="insert_time", type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
     private $insertTime;
@@ -50,7 +50,7 @@ class Guess
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="updateTime", type="datetime")
+     * @ORM\Column(name="update_time", type="datetime")
      * @Gedmo\Timestampable(on="create")
      * @Gedmo\Timestampable(on="update")
      */

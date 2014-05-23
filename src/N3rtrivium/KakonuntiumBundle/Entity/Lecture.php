@@ -42,14 +42,14 @@ class Lecture
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="beginTime", type="datetime")
+     * @ORM\Column(name="begin_time", type="datetime")
      */
     private $beginTime;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="endTime", type="datetime")
+     * @ORM\Column(name="end_time", type="datetime")
      */
     private $endTime;
 

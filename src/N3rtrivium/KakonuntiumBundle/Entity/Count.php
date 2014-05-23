@@ -33,7 +33,7 @@ class Count
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="submitTime", type="datetime")
+     * @ORM\Column(name="submit_time", type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
     private $submitTime;
