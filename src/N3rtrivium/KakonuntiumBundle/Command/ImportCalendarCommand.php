@@ -2,6 +2,7 @@
 
 namespace N3rtrivium\KakonuntiumBundle\Command;
 
+use N3rtrivium\KakonuntiumBundle\Entity\Lecture;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -40,7 +41,8 @@ class ImportCalendarCommand extends ContainerAwareCommand
         $calendar = Reader::read($icalData);
         $output->writeln("ical data has been read into memory");
         
-        $today = new \DateTime('midnight', new \DateTimeZone('Europe/Vienna'));
+        $today = new \DateTime('now', new \DateTimeZone('Europe/Vienna'));
+	    $today->sub(new \DateInterval('PT2H'));
         
         $maxFutureDate = new \DateTime('midnight', new \DateTimeZone('Europe/Vienna'));
         $maxFutureDate->add(new \DateInterval('P1Y'));
@@ -94,15 +96,15 @@ class ImportCalendarCommand extends ContainerAwareCommand
 
             $eventHash = md5($event->UID . 'x' . $event->DTSTART . 'x' . $event->DTEND);
             
-            $startTime = $event->DTSTART->getDateTime();
+            $startTime = clone $event->DTSTART->getDateTime();
             $startTime->setTimezone(new \DateTimeZone('Europe/Vienna'));
             
-            $endTime = $event->DTEND->getDateTime();
+            $endTime = clone $event->DTEND->getDateTime();
             $endTime->setTimezone(new \DateTimeZone('Europe/Vienna'));
             
             $foundEvents[$eventHash] = array(
                 'hash' => $eventHash,
-                'title' => $event->SUMMARY,
+                'title' => (string) $event->SUMMARY,
                 'start' => $startTime,
                 'end' => $endTime
             );
@@ -125,14 +127,14 @@ class ImportCalendarCommand extends ContainerAwareCommand
                     $foundLecture->getName(), $foundLecture->getBeginTime()->format('Y-m-d H:i'),
                     $foundLecture->getEndTime()->format('Y-m-d H:i')));
                 
-                $this->entityManager->remove($foundLecture);
+                $entityManager->remove($foundLecture);
                 continue;
             }
             
             $knownHashes[] = $foundLecture->getCalendarHash();
         }
         
-        $this->entityManager->flush();
+        $entityManager->flush();
         
         $output->writeln('removed specified events from database');
         $output->writeln('sorting out hashes not in the database (for event insertion)');
@@ -156,11 +158,11 @@ class ImportCalendarCommand extends ContainerAwareCommand
                     $lecture->getName(), $lecture->getBeginTime()->format('Y-m-d H:i'),
                     $lecture->getEndTime()->format('Y-m-d H:i')));
 
-            $this->entityManager->persist($lecture);
+            $entityManager->persist($lecture);
         }
         
         $output->writeln('writing new events to database');
-        $this->entityManager->flush($lecture);
+        $entityManager->flush();
         
         $output->writeln('finished!');
     }
