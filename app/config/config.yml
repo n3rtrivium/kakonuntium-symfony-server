@@ -105,3 +105,4 @@ nelmio_cors:
     paths:
         '^/':
             hosts: ['*.']
+            allow_origin: ['*']
