@@ -83,6 +83,7 @@ class Lecture
      * @var string
      *
      * @ORM\Column(name="ical_hash", type="string", length=32, nullable=false)
+     * @Serializer\Exclude
      */
     private $calendarHash;
     
