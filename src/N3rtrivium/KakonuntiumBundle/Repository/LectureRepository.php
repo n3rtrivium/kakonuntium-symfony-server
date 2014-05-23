@@ -54,4 +54,18 @@ class LectureRepository extends EntityRepository
 
 		return $query->getOneOrNullResult();
 	}
+	
+	public function findOpenLecturesBetweenDates(\DateTime $start, \DateTime $end)
+	{
+	    $query = $this->createQueryBuilder('l')
+			->where(':start <= l.beginTime')
+			->andWhere(':end >= l.beginTime')
+			->andWhere('l.phase = :phaseOpen')
+			->setParameter('phaseOpen', Lecture::PHASE_OPEN)
+			->setParameter('start', $start)
+			->setParameter('end', $end)
+			->getQuery();
+
+		return $query->getResult();
+	}
 }

@@ -10,7 +10,9 @@ use JMS\Serializer\JsonSerializationVisitor;
 /**
  * Lecture
  *
- * @ORM\Table(name="lectures")
+ * @ORM\Table(name="lectures", uniqueConstraints={
+ *     @ORM\UniqueConstraint(name="unique_calendar_hash", columns={"ical_hash"})
+ * })
  * @ORM\Entity(repositoryClass="N3rtrivium\KakonuntiumBundle\Repository\LectureRepository")
  */
 class Lecture
@@ -33,7 +35,7 @@ class Lecture
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=50)
+     * @ORM\Column(name="name", type="string", length=100)
      */
     private $name;
 
@@ -78,9 +80,16 @@ class Lecture
     private $winnerUser;
     
     /**
+     * @var string
+     *
+     * @ORM\Column(name="ical_hash", type="string", length=32, nullable=false)
+     */
+    private $calendarHash;
+    
+    /**
      * @var ArrayCollection
      * 
-     * @ORM\OneToMany(targetEntity="Guess", mappedBy="lecture")
+     * @ORM\OneToMany(targetEntity="Guess", mappedBy="lecture", cascade={"remove"})
      * @Serializer\Exclude
      **/
     private $guesses;
@@ -88,7 +97,7 @@ class Lecture
     /**
      * @var ArrayCollection
      * 
-     * @ORM\OneToMany(targetEntity="Count", mappedBy="lecture")
+     * @ORM\OneToMany(targetEntity="Count", mappedBy="lecture", cascade={"remove"})
      * @Serializer\Exclude
      **/
     private $countings;
@@ -245,6 +254,29 @@ class Lecture
     public function getWinnerUser()
     {
         return $this->winnerUser;
+    }
+    
+    /**
+     * Set calendar hash
+     *
+     * @param string $calendarHash
+     * @return Lecture
+     */
+    public function setCalendarHash($calendarHash)
+    {
+        $this->calendarHash = $calendarHash;
+
+        return $this;
+    }
+
+    /**
+     * Get calendar hash
+     *
+     * @return string 
+     */
+    public function getCalendarHash()
+    {
+        return $this->calendarHash;
     }
     
     /**
