@@ -2,8 +2,6 @@
 
 namespace N3rtrivium\KakonuntiumBundle\Model;
 
-use N3rtrivium\KakonuntiumBundle\Entity\User;
-
 /**
  * CreateUserResponseModel
  */

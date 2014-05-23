@@ -8,7 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Guess
  * @ORM\Table(name="guesses", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="unique_guess_per_lecture", columns={"user_id", "lecture_id"})
+ *     @ORM\UniqueConstraint(name="unique_guesses", columns={"user_id", "lecture_id", "which"})
  * })
  * @ORM\Entity(repositoryClass="N3rtrivium\KakonuntiumBundle\Repository\GuessRepository")
  */
@@ -51,6 +51,7 @@ class Guess
      * @var \DateTime
      *
      * @ORM\Column(name="updateTime", type="datetime")
+     * @Gedmo\Timestampable(on="create")
      * @Gedmo\Timestampable(on="update")
      */
     private $updateTime;
@@ -83,7 +84,7 @@ class Guess
     /**
      * Set user
      *
-     * @param \stdClass $user
+     * @param User $user
      * @return Guess
      */
     public function setUser($user)
@@ -96,7 +97,7 @@ class Guess
     /**
      * Get user
      *
-     * @return \stdClass 
+     * @return User
      */
     public function getUser()
     {
@@ -106,7 +107,7 @@ class Guess
     /**
      * Set lecture
      *
-     * @param \stdClass $lecture
+     * @param Lecture $lecture
      * @return Guess
      */
     public function setLecture($lecture)
@@ -119,7 +120,7 @@ class Guess
     /**
      * Get lecture
      *
-     * @return \stdClass 
+     * @return Lecture
      */
     public function getLecture()
     {

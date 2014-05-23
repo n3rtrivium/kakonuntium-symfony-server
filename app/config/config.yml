@@ -59,6 +59,7 @@ swiftmailer:
 sensio_framework_extra:
     view:
         annotations: false
+    request: { converters: true }
 
 fos_rest:
     routing_loader:
@@ -71,14 +72,13 @@ fos_rest:
         formats:
             json: true
             xml: true
-    # add a content negotiation rule, enabling support for json/xml for the entire website
+    # add a content negotiation rule, enabling support for json for the entire website
     format_listener:
         rules:
             - { path: ^/, priorities: [ json ], fallback_format: json, prefer_extension: false }
     body_listener:
         decoders:
             json: fos_rest.decoder.json
-            xml: fos_rest.decoder.xml
     body_converter:
         enabled: true
     exception:
@@ -93,3 +93,16 @@ n3rtrivium_kakonuntium:
         - haui
         - pieps
     lectures_ical_source: "http://almaty.fh-joanneum.at/stundenplan/search.php?q=studiengang:ASE+jahr:2013+-ort:ASY+gruppe:ALL+-ort:Online"
+
+nelmio_cors:
+    defaults:
+        allow_credentials: false
+        allow_origin: ['*']
+        allow_headers: ['*']
+        allow_methods: ['POST', 'PUT', 'GET', 'OPTIONS']
+        expose_headers: []
+        max_age: 0
+    paths:
+        '^/':
+            hosts: ['*.']
+            allow_origin: ['*']
