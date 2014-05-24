@@ -108,7 +108,7 @@ class GuessService
 	{
 		if ($lecture->getPhase() === $lecture::PHASE_OPEN)
 		{
-			return new \stdClass();
+			return array('haui' => 0, 'pieps' => 0);
 		}
 
 		return $this->countRepository->findSummedCountingsByLecture($lecture);
