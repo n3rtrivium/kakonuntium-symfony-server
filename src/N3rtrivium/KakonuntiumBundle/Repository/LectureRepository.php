@@ -67,15 +67,11 @@ class LectureRepository extends EntityRepository
 		$maxAllowedFutureDate = new \DateTime();
 		$maxAllowedFutureDate->add(new \DateInterval('P2D'));
 
-		$now = new \DateTime();
-
 		// return only lectures where the beginTime is not too far in the future
 		// OR phase is ENDED and they are not too old - otherwise, filter ENDED
 		$query = $this->createQueryBuilder('l')
-			->where('l.beginTime <= :now AND :now <= l.endTime AND l.phase != :phaseEnded')
-			->orWhere('l.beginTime <= :maxFutureTime AND l.phase != :phaseEnded')
+			->where('l.beginTime <= :maxFutureTime AND l.phase != :phaseEnded')
 			->setParameter('phaseEnded', Lecture::PHASE_ENDED)
-			->setParameter('now', $now)
 			->setParameter('maxFutureTime', $maxAllowedFutureDate)
 			->orderBy('l.beginTime', 'DESC')
 			->setMaxResults(1)
