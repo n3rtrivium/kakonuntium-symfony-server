@@ -80,7 +80,8 @@ class LectureService
 			catch (\LengthException $e)
 			{
 				$lecture->setAdminUser(null);
-				$lecture->setWinnerUser(null);
+				$lecture->setWinnerUserHaui(null);
+				$lecture->setWinnerUserPieps(null);
 				$lecture->setPhase(Lecture::PHASE_ENDED);
 			}
 		}
@@ -92,9 +93,10 @@ class LectureService
 			$guesses = $lecture->getGuesses();
 
 			$winningDetector = new GameWinnerDetector($countings, $guesses);
-			$winner = $winningDetector->determineWinner();
+			$winners = $winningDetector->determineWinners();
 
-			$lecture->setWinnerUser($winner);
+			$lecture->setWinnerUserHaui($winners['haui']);
+			$lecture->setWinnerUserPieps($winners['pieps']);
 			$lecture->setPhase(Lecture::PHASE_ENDED);
 		}
 

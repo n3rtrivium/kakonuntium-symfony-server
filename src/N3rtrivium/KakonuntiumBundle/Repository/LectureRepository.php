@@ -43,13 +43,42 @@ class LectureRepository extends EntityRepository
 
 	public function findFutureUpcomingOrCurrentLectures()
 	{
-		return $this->createUpcomingOrCurrentLecturesQueryBuilder()->getQuery()->getResult();
+		$maxAllowedFutureDate = new \DateTime();
+		$maxAllowedFutureDate->add(new \DateInterval('P2D'));
+
+		$minAllowedEndedPastDate = new \DateTime();
+		$minAllowedEndedPastDate->sub(new \DateInterval('PT90M'));
+
+		// return only lectures where the beginTime is not too far in the future
+		// OR phase is ENDED and they are not too old - otherwise, filter ENDED
+		return $this->createQueryBuilder('l')
+			->where('l.phase = :phaseEnded AND l.endTime >= :minPastTime')
+			->orWhere('l.beginTime <= :maxFutureTime AND l.phase != :phaseEnded')
+			->setParameter('phaseEnded', Lecture::PHASE_ENDED)
+			->setParameter('maxFutureTime', $maxAllowedFutureDate)
+			->setParameter('minPastTime', $minAllowedEndedPastDate)
+			->orderBy('l.beginTime', 'DESC')
+			->getQuery()
+			->getResult();
 	}
 
 	public function findOneUpcomingOrCurrentLecture()
 	{
-		$builder = $this->createUpcomingOrCurrentLecturesQueryBuilder();
-		$query = $builder->setMaxResults(1)
+		$maxAllowedFutureDate = new \DateTime();
+		$maxAllowedFutureDate->add(new \DateInterval('P2D'));
+
+		$now = new \DateTime();
+
+		// return only lectures where the beginTime is not too far in the future
+		// OR phase is ENDED and they are not too old - otherwise, filter ENDED
+		$query = $this->createQueryBuilder('l')
+			->where('l.beginTime <= :now AND :now <= l.endTime AND l.phase != :phaseEnded')
+			->orWhere('l.beginTime <= :maxFutureTime AND l.phase != :phaseEnded')
+			->setParameter('phaseEnded', Lecture::PHASE_ENDED)
+			->setParameter('now', $now)
+			->setParameter('maxFutureTime', $maxAllowedFutureDate)
+			->orderBy('l.beginTime', 'DESC')
+			->setMaxResults(1)
 			->getQuery();
 
 		return $query->getOneOrNullResult();
