@@ -3,6 +3,7 @@
 namespace N3rtrivium\KakonuntiumBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use N3rtrivium\KakonuntiumBundle\Repository\CountRepository;
 use Symfony\Component\Validator\ValidatorInterface;
 use N3rtrivium\KakonuntiumBundle\Entity\Lecture;
 use N3rtrivium\KakonuntiumBundle\Entity\User;
@@ -23,7 +24,12 @@ class GuessService
 	 * @var GuessRepository
 	 */
 	private $guessRepository;
-	
+
+	/**
+	 * @var CountRepository
+	 */
+	private $countRepository;
+
 	/**
 	 * @var ValidatorInterface
 	 */
@@ -33,7 +39,8 @@ class GuessService
     {
         $this->entityManager = $entityManager;
         $this->guessRepository = $entityManager->getRepository('N3rtriviumKakonuntiumBundle:Guess');
-        $this->validator = $validator;
+	    $this->countRepository = $entityManager->getRepository('N3rtriviumKakonuntiumBundle:Count');
+	    $this->validator = $validator;
     }
     
     public function retrieveGuessesOfLecture(Lecture $lecture)
@@ -96,7 +103,17 @@ class GuessService
         
         $this->entityManager->flush();
     }
-    
+
+	public function retrieveCountsOfLecture(Lecture $lecture)
+	{
+		if ($lecture->getPhase() === $lecture::PHASE_OPEN)
+		{
+			return new \stdClass();
+		}
+
+		return $this->countRepository->findSummedCountingsByLecture($lecture);
+	}
+
     public function addCount(Lecture $lecture, $which)
     {
 	    if ($lecture->getPhase() !== $lecture::PHASE_RUNNING)

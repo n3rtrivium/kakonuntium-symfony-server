@@ -98,7 +98,22 @@ class GuessController extends FOSRestController
 	    $guessService = $this->container->get('n3rtrivium_kakonuntium.guesses');
 		return $guessService->retrieveUserGuessOfLecture($lecture, $user);
     }
-    
+
+	/**
+	 * @Get("/lectures/{lecture}/guesses/admin")
+	 * @ParamConverter("lecture", class="N3rtriviumKakonuntiumBundle:Lecture")
+	 * @View
+	 */
+	public function showActualCountsAction(Lecture $lecture)
+	{
+		// Check lecture as a status update may be needed
+		$lectureService = $this->container->get('n3rtrivium_kakonuntium.lectures');
+		$lectureService->doCheckPhaseForLecture($lecture);
+
+		$guessService = $this->container->get('n3rtrivium_kakonuntium.guesses');
+		return $guessService->retrieveCountsOfLecture($lecture);
+	}
+
     /**
      * @Post("/lectures/{lecture}/guesses/admin/{which}")
      * @ParamConverter("lecture", class="N3rtriviumKakonuntiumBundle:Lecture")
