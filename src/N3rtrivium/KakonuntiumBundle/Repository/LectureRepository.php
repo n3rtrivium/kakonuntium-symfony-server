@@ -65,7 +65,7 @@ class LectureRepository extends EntityRepository
 	public function findOneUpcomingOrCurrentLecture()
 	{
 		$maxAllowedFutureDate = new \DateTime();
-		$maxAllowedFutureDate->add(new \DateInterval('P2D'));
+		$maxAllowedFutureDate->add(new \DateInterval('P8D'));
 
 		// return only lectures where the beginTime is not too far in the future
 		// OR phase is ENDED and they are not too old - otherwise, filter ENDED

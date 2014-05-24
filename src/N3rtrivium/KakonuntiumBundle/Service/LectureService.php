@@ -123,8 +123,13 @@ class LectureService
 	{
 		$lecture = $this->lectureRepository->findOneUpcomingOrCurrentLecture();
 
-		$this->updateLecturePhase($lecture);
-		return $lecture;
+		if ($lecture !== null)
+		{
+			$this->updateLecturePhase($lecture);
+			return $lecture;
+		}
+
+		return new \stdClass();
 	}
 
 	public function retrieveLectureById($id)
