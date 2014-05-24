@@ -2,6 +2,8 @@
 
 namespace N3rtrivium\KakonuntiumBundle\Model;
 
+use JMS\Serializer\Annotation\PreSerialize;
+
 /**
  * LectureGuessesResponseModel
  */
@@ -28,5 +30,13 @@ class LectureGuessesResponseModel
 	    $guessOn = new LectureGuessesDataResponseModel($which, $count);
 
 		$this->guesses[$userId]['guesses'][] = $guessOn;
+	}
+
+	/**
+	 * @PreSerialize
+	 */
+	public function onPreSerialize()
+	{
+		$this->guesses = array_values($this->guesses);
 	}
 }

@@ -43,7 +43,7 @@ class GuessService
 
         foreach ($guesses as $guess)
         {
-            $result->addGuess($guess->getUser()->getId(), $guess->getUser()->getUsername(),
+            $result->addGuess($guess->getUser()->getPublicId(), $guess->getUser()->getUsername(),
                 $guess->getWhich(), $guess->getQuantity());
         }
         
