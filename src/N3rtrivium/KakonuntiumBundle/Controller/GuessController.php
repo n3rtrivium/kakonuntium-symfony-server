@@ -86,7 +86,7 @@ class GuessController extends FOSRestController
     }
     
     /**
-     * @Get("/lectures/{lecture}/guesses/{user}")
+     * @Get("/lectures/{lecture}/guesses/{user}", requirements={"user"="\d+"})
      * @ParamConverter("lecture", class="N3rtriviumKakonuntiumBundle:Lecture")
      * @ParamConverter("user", class="N3rtriviumKakonuntiumBundle:User", options={
      *     "repository_method"="findUserByPublicId"
