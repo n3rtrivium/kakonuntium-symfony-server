@@ -73,11 +73,20 @@ class Lecture
     /**
      * @var User|null
      *
-     * @ORM\JoinColumn(name="winner_user_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="winner_user_id_haui", referencedColumnName="id", nullable=true)
      * @ORM\ManyToOne(targetEntity="User")
      * @Serializer\Exclude
      */
-    private $winnerUser;
+    private $winnerUserHaui;
+
+	/**
+	 * @var User|null
+	 *
+	 * @ORM\JoinColumn(name="winner_user_id_pieps", referencedColumnName="id", nullable=true)
+	 * @ORM\ManyToOne(targetEntity="User")
+	 * @Serializer\Exclude
+	 */
+	private $winnerUserPieps;
     
     /**
      * @var string
@@ -237,12 +246,12 @@ class Lecture
     /**
      * Set winning user
      *
-     * @param User|null $winnerUser
+     * @param User|null $winnerUserHaui
      * @return Lecture
      */
-    public function setWinnerUser($winnerUser)
+    public function setWinnerUserHaui($winnerUserHaui)
     {
-        $this->winnerUser = $winnerUser;
+        $this->winnerUserHaui = $winnerUserHaui;
 
         return $this;
     }
@@ -252,10 +261,33 @@ class Lecture
      *
      * @return User|null 
      */
-    public function getWinnerUser()
+    public function getWinnerUserHaui()
     {
-        return $this->winnerUser;
+        return $this->winnerUserHaui;
     }
+
+	/**
+	 * Set winning user
+	 *
+	 * @param User|null $winnerUserPieps
+	 * @return Lecture
+	 */
+	public function setWinnerUserPieps($winnerUserPieps)
+	{
+		$this->winnerUserPieps = $winnerUserPieps;
+
+		return $this;
+	}
+
+	/**
+	 * Get winning user
+	 *
+	 * @return User|null
+	 */
+	public function getWinnerUserPieps()
+	{
+		return $this->winnerUserPieps;
+	}
     
     /**
      * Set calendar hash
@@ -389,14 +421,31 @@ class Lecture
 			return null;
 		}
 
-		if ($this->getWinnerUser() === null)
+		if ($this->getWinnerUserHaui() === null && $this->getWinnerUserPieps() === null)
 		{
 			return null;
 		}
 
+		$haui = $pieps = null;
+		if ($this->getWinnerUserHaui() !== null)
+		{
+			$haui = array(
+				'user_id' => $this->getWinnerUserHaui()->getPublicId(),
+				'username' => $this->getWinnerUserHaui()->getUsername(),
+			);
+		}
+
+		if ($this->getWinnerUserPieps() !== null)
+		{
+			$pieps = array(
+				'user_id' => $this->getWinnerUserPieps()->getPublicId(),
+				'username' => $this->getWinnerUserPieps()->getUsername(),
+			);;
+		}
+
 		return array(
-			'user_id' => $this->getWinnerUser()->getPublicId(),
-			'username' => $this->getWinnerUser()->getUsername(),
+			'haui' => $haui,
+			'pieps' => $pieps
 		);
 	}
 
