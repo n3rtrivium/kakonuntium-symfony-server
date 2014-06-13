@@ -73,7 +73,7 @@ class LectureRepository extends EntityRepository
 			->where('l.beginTime <= :maxFutureTime AND l.phase != :phaseEnded')
 			->setParameter('phaseEnded', Lecture::PHASE_ENDED)
 			->setParameter('maxFutureTime', $maxAllowedFutureDate)
-			->orderBy('l.beginTime', 'DESC')
+			->orderBy('l.beginTime', 'ASC')
 			->setMaxResults(1)
 			->getQuery();
 
